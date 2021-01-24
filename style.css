@@ -63,7 +63,6 @@ header {
     overflow: hidden;
     white-space: nowrap;
     clip: rect(0, 0, 0, 0);
-
 }
 
 #logo {
@@ -198,6 +197,13 @@ td.expense {
     background: #F0F2f5;
     padding: 2.4rem;
 }
+
+/* Form ============================ */
+.form {
+    max-width: 500px;
+}
+
+
 
 
 /* Footer ============================ */
