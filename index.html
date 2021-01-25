@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap" rel="stylesheet">
+    <script defer type="text/javascript" src="script.js"></script>
 </head>
 <body>
 
@@ -55,7 +56,10 @@
         <section id="transaction">
             <h2 class="sr-only">Transações</h2>
 
-            <a href="#" class="button new">+ Nova Transação</a>
+            <a 
+            href="#"
+            onclick="Modal.open()" 
+            class="button new">+ Nova Transação</a>
 
             <table id="data-table">
                 <thead>
@@ -98,7 +102,7 @@
 
     </main>
 
-    <div class="modal-overlay active">
+    <div class="modal-overlay">
         <div class="modal">
             <div class="form">
                 <h2>Nova Transação</h2>
@@ -141,7 +145,10 @@
                     </div>
 
                     <div class="input-group actions">
-                        <a href="#" class="button cancel">Cancelar</a>
+                        <a 
+                        href="#" 
+                        onclick="Modal.close()"
+                        class="button cancel">Cancelar</a>
                         <button>Salvar</button>
                     </div>
                 </form>
@@ -151,7 +158,7 @@
 
     <footer>
         <p>Dev.finance$</p>
-    </footer>
+    </footer>   
 
 </body>
 
