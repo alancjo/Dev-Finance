@@ -160,7 +160,7 @@ header {
 }
 
 #data-table {
-    display: block;
+    width: 100%;
     border-spacing: 0 0.5rem ;
     color: #969cb3;
 }
