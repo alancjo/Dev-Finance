@@ -13,7 +13,6 @@ const Modal = {
         document 
             .querySelector('.modal-overlay')
             .classList
-            .remove('active')
-    
+            .remove('active')    
     }
 } 
