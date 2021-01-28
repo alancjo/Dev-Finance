@@ -45,15 +45,27 @@ const transactions = [
 ]
 
 const Transaction = {
-//     incomes() {
-//         // somar as entradas
-//     }, 
-//     expenses() {
-//         // somar as saídas 
-//     }, 
-//     total() {
-//         // entradas - saídas
-//     }
+    incomes() {
+        let income = 0;
+        transactions.forEach(transaction => {
+            if (transaction.amount > 0) {
+                income += transaction.amount
+            }
+        })
+        return income;
+    }, 
+    expenses() {
+        let expense = 0;
+        transactions.forEach(transaction => {
+            if (transaction.amount < 0) {
+                expense += transaction.amount
+            }
+        })
+        return expense; 
+    }, 
+    total() {
+        return "Discover";
+    }
 }
 
 const DOM = {
@@ -80,16 +92,38 @@ const DOM = {
         `
 
         return html;
+    },
+
+    updateBalance() {
+        document
+            .getElementById('incomeDisplay')
+            .innerHTML = Transaction.incomes();
+        document
+            .getElementById('expenseExpense')
+            .innerHTML = Transaction.expenses();
+        document
+            .getElementById('totalDisplay')
+            .innerHTML = Transaction.total();
     }
 }
 
 const Utils = {
     formatCurrency(value) {
         const signal = Number(value) < 0 ? "-" : "";
+
+        value = String(value).replace(/\D/g, "");
+
+        value = Number(value) / 100;
+
+        value = value.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+
+        return signal + value;
     }
 }
 
-
 transactions.forEach(element => DOM.addTransaction(element));
 
-
+DOM.updateBalance();
