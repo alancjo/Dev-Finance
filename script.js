@@ -19,25 +19,21 @@ const Modal = {
 
 const transactions = [
     {
-        id: 1, 
         description: 'Luz', 
         amount: -50000, // o valor real é R$ 500,00
         date: '23/01/2021',
     },
     {
-        id: 2, 
         description: 'Website', 
         amount: 500000,
         date: '15/01/2021',
     },
     {
-        id: 3, 
         description: 'Internet', 
         amount: -36250,
         date: '12/01/2021',
     },
     {
-        id: 4, 
         description: 'App', 
         amount: 600,
         date: '12/01/2021',
@@ -45,9 +41,24 @@ const transactions = [
 ]
 
 const Transaction = {
+    all: transactions,
+
+    add(transaction) {
+        Transaction.all.push(transaction);
+
+        App.reload();
+    },
+
+    remove(index) {
+        Transaction.all.splice(index, 1);
+        console.log(Transaction.all)
+
+        App.reload();
+    },
+
     incomes() {
         let income = 0;
-        transactions.forEach(transaction => {
+        Transaction.all.forEach(transaction => {
             if (transaction.amount > 0) {
                 income += transaction.amount
             }
@@ -56,7 +67,7 @@ const Transaction = {
     }, 
     expenses() {
         let expense = 0;
-        transactions.forEach(transaction => {
+        Transaction.all.forEach(transaction => {
             if (transaction.amount < 0) {
                 expense += transaction.amount
             }
@@ -64,7 +75,7 @@ const Transaction = {
         return expense; 
     }, 
     total() {
-        return "Discover";
+        return Transaction.incomes() + Transaction.expenses();
     }
 }
 
@@ -97,13 +108,17 @@ const DOM = {
     updateBalance() {
         document
             .getElementById('incomeDisplay')
-            .innerHTML = Transaction.incomes();
+            .innerHTML = Utils.formatCurrency(Transaction.incomes());
         document
             .getElementById('expenseExpense')
-            .innerHTML = Transaction.expenses();
+            .innerHTML = Utils.formatCurrency(Transaction.expenses());
         document
             .getElementById('totalDisplay')
-            .innerHTML = Transaction.total();
+            .innerHTML = Utils.formatCurrency(Transaction.total());
+    },
+
+    clearTransaction() {
+        DOM.transactionsContainer.innerHTML = "";
     }
 }
 
@@ -124,6 +139,17 @@ const Utils = {
     }
 }
 
-transactions.forEach(element => DOM.addTransaction(element));
+const App = {
+    init() {
 
-DOM.updateBalance();
+        transactions.forEach(transaction => DOM.addTransaction(transaction));
+        
+        DOM.updateBalance();
+    }, 
+    reload() {
+        DOM.clearTransaction();
+        App.init();
+    },
+}
+
+App.init(); 
