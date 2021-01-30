@@ -61,28 +61,28 @@ const Transaction = {
     }
 }
 
-const transactions = [
-    {
-        description: 'Luz', 
-        amount: -50000, // o valor real é R$ 500,00
-        date: '23/01/2021',
-    },
-    {
-        description: 'Website', 
-        amount: 500000,
-        date: '15/01/2021',
-    },
-    {
-        description: 'Internet', 
-        amount: -36250,
-        date: '12/01/2021',
-    },
-    {
-        description: 'App', 
-        amount: 600,
-        date: '12/01/2021',
-    }
-]
+// const transactions = [
+//     {
+//         description: 'Luz', 
+//         amount: -50000, // o valor real é R$ 500,00
+//         date: '23/01/2021',
+//     },
+//     {
+//         description: 'Website', 
+//         amount: 500000,
+//         date: '15/01/2021',
+//     },
+//     {
+//         description: 'Internet', 
+//         amount: -36250,
+//         date: '12/01/2021',
+//     },
+//     {
+//         description: 'App', 
+//         amount: 600,
+//         date: '12/01/2021',
+//     }
+// ]
 
 
 const DOM = {
