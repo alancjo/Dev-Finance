@@ -1,15 +1,11 @@
 const Modal = {
     open() {
-        // Abrir modal 
-        // Adicionar a class active ao modal
         document
             .querySelector('.modal-overlay')
             .classList
             .add('active');
     },
     close() { 
-        // fechar o modal 
-        // remover a class active do modal
         document 
             .querySelector('.modal-overlay')
             .classList
@@ -24,6 +20,44 @@ const Storage = {
 
     set(transactions) {
         localStorage.setItem("dev.finances:transactions", JSON.stringify(transactions));
+    }
+}
+
+const Transaction = {
+    all: Storage.get(),
+
+    add(transaction) {
+        Transaction.all.push(transaction);
+
+        App.reload();
+    },
+
+    remove(index) {
+        Transaction.all.splice(index, 1);
+
+        App.reload();
+    },
+
+    incomes() {
+        let income = 0;
+        Transaction.all.forEach(transaction => {
+            if (transaction.amount > 0) {
+                income += transaction.amount
+            }
+        })
+        return income;
+    }, 
+    expenses() {
+        let expense = 0;
+        Transaction.all.forEach(transaction => {
+            if (transaction.amount < 0) {
+                expense += transaction.amount;
+            }
+        })
+        return expense; 
+    }, 
+    total() {
+        return Transaction.incomes() + Transaction.expenses();
     }
 }
 
@@ -50,47 +84,9 @@ const transactions = [
     }
 ]
 
-const Transaction = {
-    all: Storage.get(),
-
-    add(transaction) {
-        Transaction.all.push(transaction);
-
-        App.reload();
-    },
-
-    remove(index) {
-        Transaction.all.splice(index, 1);
-        console.log(Transaction.all)
-
-        App.reload();
-    },
-
-    incomes() {
-        let income = 0;
-        Transaction.all.forEach(transaction => {
-            if (transaction.amount > 0) {
-                income += transaction.amount
-            }
-        })
-        return income;
-    }, 
-    expenses() {
-        let expense = 0;
-        Transaction.all.forEach(transaction => {
-            if (transaction.amount < 0) {
-                expense += transaction.amount
-            }
-        })
-        return expense; 
-    }, 
-    total() {
-        return Transaction.incomes() + Transaction.expenses();
-    }
-}
 
 const DOM = {
-    transactionsContainer: document.querySelector('#data-table'),
+    transactionsContainer: document.querySelector('#data-table tbody'),
 
     addTransaction(transaction, index) {
         const tr = document.createElement('tr');
@@ -107,7 +103,7 @@ const DOM = {
 
         const html = `
         <td class="description">${transaction.description}</td>
-        <td class=${CSSclass}>${transaction.amount}</td>
+        <td class=${CSSclass}>${amount}</td>
         <td class="date">${transaction.date}</td>
         <td>
             <img onclick="Transaction.remove(${index})" src="./assets/minus.svg" alt="Remover transação">
@@ -122,7 +118,7 @@ const DOM = {
             .getElementById('incomeDisplay')
             .innerHTML = Utils.formatCurrency(Transaction.incomes());
         document
-            .getElementById('expenseExpense')
+            .getElementById('expenseDisplay')
             .innerHTML = Utils.formatCurrency(Transaction.expenses());
         document
             .getElementById('totalDisplay')
@@ -136,12 +132,13 @@ const DOM = {
 
 const Utils = {
     formatAmount(value) {
-        value = Number(value) * 100;
-        console.log(value);
+        value = Number(value.replace(/\,\./g, "")) * 100;
+
+        return value;
     },
 
     formatDate(date) {
-        const splittedDate = date.split("0");
+        const splittedDate = date.split("-");
         
         return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`;
     },
@@ -190,9 +187,10 @@ const Form = {
         date = Utils.formatDate(date); 
 
         return {
-            description, amount, date
+            description,
+            amount, 
+            date
         }
-
     },
 
     clearFields() {
@@ -201,38 +199,24 @@ const Form = {
         Form.date.value = "";
     },
 
-    formatData() {
-        console.log('Formatar os dados');
-    },
-    
     submit(event) {
         event.preventDefault();
 
         try {
             Form.validateFields();
-            // formatar os dados para salvar 
             const transaction = Form.formatValues();
-            // salvar 
             Transaction.add(transaction);
-            // apagar os dados do formulário
             Form.clearFields()
-            // fechar modal 
             Modal.close()
-            // Atualizar a aplicação
         } catch (error) {
             alert(error.message);
         }
     }
 }
 
-
-Storage.set("alooou")
-Storage.get();
-
 const App = {
     init() {
-
-        // transactions.forEach((transaction, index) => DOM.addTransaction(transaction, index));
+        // Transaction.all.forEach((transaction, index) => DOM.addTransaction(transaction, index));
         Transaction.all.forEach(DOM.addTransaction)
         
         DOM.updateBalance();
